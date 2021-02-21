@@ -19,4 +19,11 @@ public class Money {
     public String toString() {
         return currency + " " + amount;
     }
+
+    public boolean isEqualTo(Money other) {
+        if (!currency.equals(other.currency)) {
+            throw new CurrencyMismatchException(currency, other.currency);
+        }
+        return amount == other.amount;
+    }
 }
