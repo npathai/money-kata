@@ -26,4 +26,12 @@ public class Money {
         }
         return amount == other.amount;
     }
+
+    public boolean isGreaterThan(Money other) {
+        if (!currency.equals(other.currency)) {
+            throw new CurrencyMismatchException(currency, other.currency);
+        }
+
+        return amount > other.amount;
+    }
 }
