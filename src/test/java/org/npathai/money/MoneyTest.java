@@ -52,4 +52,18 @@ public class MoneyTest {
                 .isInstanceOf(CurrencyMismatchException.class)
                 .hasMessage("Currencies differ: INR/USD");
     }
+
+    @Test
+    public void sameCurrencyLessThanComparison() {
+        assertThat(INR_10.isLessThan(INR_11)).isTrue();
+        assertThat(INR_10.isLessThan(INR_10)).isFalse();
+        assertThat(INR_11.isLessThan(INR_10)).isFalse();
+    }
+
+    @Test
+    public void isLessThanThrowsExceptionWhenCurrenciesDiffer() {
+        assertThatThrownBy(() -> INR_11.isLessThan(USD_10))
+                .isInstanceOf(CurrencyMismatchException.class)
+                .hasMessage("Currencies differ: INR/USD");
+    }
 }
