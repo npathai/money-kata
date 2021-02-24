@@ -12,7 +12,14 @@ public class Money {
     }
 
     public static Money of(long amount, Currency currency) {
+        checkArgument(amount >= 0, "amount should be a positive value");
         return new Money(amount, currency);
+    }
+
+    private static void checkArgument(boolean condition, String message) {
+        if (!condition) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     @Override
