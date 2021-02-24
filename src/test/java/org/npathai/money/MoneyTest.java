@@ -84,4 +84,21 @@ public class MoneyTest {
                     .hasMessage("Currencies differ: INR/USD");
         }
     }
+
+    @Nested
+    class Arithmetic {
+
+        @Test
+        public void sameCurrencyPlus() {
+            assertThat(INR_10.plus(INR_11)).isEqualTo(Money.of(21, Currency.INR));
+            assertThat(INR_11.plus(INR_10)).isEqualTo(Money.of(21, Currency.INR));
+        }
+
+        @Test
+        public void plusThrowsExceptionWhenCurrenciesDiffer() {
+            assertThatThrownBy(() -> INR_10.plus(USD_10))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: INR/USD");
+        }
+    }
 }
