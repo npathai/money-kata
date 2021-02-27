@@ -11,6 +11,8 @@ public class MoneyTest {
     public static final Money INR_10 = Money.of(10, Currency.INR);
     private static final Money INR_11 = Money.of(11, Currency.INR);
     private static final Money USD_10 = Money.of(10, Currency.USD);
+    private static final Money INR_0 = Money.of(0, Currency.INR);
+
 
     @Test
     public void creatingAMoneyInstance() {
@@ -98,6 +100,21 @@ public class MoneyTest {
         @Test
         public void minusThrowsExceptionWhenCurrenciesDiffer() {
             assertThatThrownBy(() -> INR_10.minus(USD_10))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: INR/USD");
+        }
+
+        @Test
+        public void sameCurrencyMultiply() {
+            assertThat(INR_11.multipliedBy(INR_10)).isEqualTo(Money.of(110, Currency.INR));
+            assertThat(INR_10.multipliedBy(INR_11)).isEqualTo(Money.of(110, Currency.INR));
+            assertThat(INR_10.multipliedBy(INR_0)).isEqualTo(INR_0);
+            assertThat(INR_10.multipliedBy(Money.of(-1, Currency.INR))).isEqualTo(Money.of(-10, Currency.INR));
+        }
+
+        @Test
+        public void multipliedByThrowsExceptionWhenCurrenciesDiffer() {
+            assertThatThrownBy(() -> INR_10.multipliedBy(USD_10))
                     .isInstanceOf(CurrencyMismatchException.class)
                     .hasMessage("Currencies differ: INR/USD");
         }
