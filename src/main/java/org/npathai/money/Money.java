@@ -14,14 +14,7 @@ public class Money {
     }
 
     public static Money of(long amount, Currency currency) {
-        checkArgument(amount >= 0, "amount should be a positive value");
         return new Money(amount, currency);
-    }
-
-    private static void checkArgument(boolean condition, String message) {
-        if (!condition) {
-            throw new IllegalArgumentException(message);
-        }
     }
 
     @Override
@@ -49,9 +42,9 @@ public class Money {
         return Money.of(amount + other.amount, currency);
     }
 
-    private void checkCurrency(Money other) {
-        if (!currency.equals(other.currency)) {
-            throw new CurrencyMismatchException(currency, other.currency);
+    private void checkCurrency(Money addToAdd) {
+        if (!currency.equals(addToAdd.currency)) {
+            throw new CurrencyMismatchException(currency, addToAdd.currency);
         }
     }
 
@@ -67,5 +60,10 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(amount, currency);
+    }
+
+    public Money minus(Money moneyToSubtract) {
+        checkCurrency(moneyToSubtract);
+        return Money.of(amount - moneyToSubtract.amount, currency);
     }
 }

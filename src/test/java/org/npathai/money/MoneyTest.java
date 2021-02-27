@@ -24,18 +24,6 @@ public class MoneyTest {
         assertThat(usd.toString()).isEqualTo("USD 10");
     }
 
-    // TODO convert to data driven test using parameterized test
-    @Test
-    public void creatingMoneyInstanceWithNegativeValuesThrowsException() {
-        assertThatThrownBy(() -> Money.of(-1, Currency.INR))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("amount should be a positive value");
-
-        assertThatThrownBy(() -> Money.of(-2, Currency.INR))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("amount should be a positive value");
-    }
-
     @Nested
     class Comparison {
         @Test
@@ -97,6 +85,19 @@ public class MoneyTest {
         @Test
         public void plusThrowsExceptionWhenCurrenciesDiffer() {
             assertThatThrownBy(() -> INR_10.plus(USD_10))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: INR/USD");
+        }
+
+        @Test
+        public void sameCurrencyMinus() {
+            assertThat(INR_10.minus(INR_11)).isEqualTo(Money.of(-1, Currency.INR));
+            assertThat(INR_11.minus(INR_10)).isEqualTo(Money.of(1, Currency.INR));
+        }
+
+        @Test
+        public void minusThrowsExceptionWhenCurrenciesDiffer() {
+            assertThatThrownBy(() -> INR_10.minus(USD_10))
                     .isInstanceOf(CurrencyMismatchException.class)
                     .hasMessage("Currencies differ: INR/USD");
         }
