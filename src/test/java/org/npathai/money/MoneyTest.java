@@ -3,6 +3,8 @@ package org.npathai.money;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -12,6 +14,8 @@ public class MoneyTest {
     private static final Money INR_11 = Money.of(11, Currency.INR);
     private static final Money USD_10 = Money.of(10, Currency.USD);
     private static final Money INR_0 = Money.of(0, Currency.INR);
+    private static final Money INR_2 = Money.of(2, Currency.INR);
+    private static final Money INR_9 = Money.of(9, Currency.INR);
 
 
     @Test
@@ -117,6 +121,20 @@ public class MoneyTest {
             assertThatThrownBy(() -> INR_10.multipliedBy(USD_10))
                     .isInstanceOf(CurrencyMismatchException.class)
                     .hasMessage("Currencies differ: INR/USD");
+        }
+
+        @Test
+        public void sameCurrencyDivision() {
+            assertThat(INR_10.dividedBy(INR_2)).isEqualTo(Money.of(5, Currency.INR));
+            assertThat(INR_9.dividedBy(INR_2)).isEqualTo(Money.of(4, Currency.INR));
+            assertThat(INR_10.dividedBy(INR_10)).isEqualTo(Money.of(1, Currency.INR));
+        }
+
+        @Test
+        public void divisionTruncatesDecimals() {
+            assertThat(INR_11.dividedBy(INR_2)).isEqualTo(Money.of(5, Currency.INR));
+            assertThat(INR_11.dividedBy(INR_10)).isEqualTo(Money.of(1, Currency.INR));
+            assertThat(INR_2.dividedBy(INR_10)).isEqualTo(INR_0);
         }
     }
 }

@@ -71,4 +71,10 @@ public class Money {
         checkCurrency(moneyToMultiplyWith);
         return Money.of(amount * moneyToMultiplyWith.amount, currency);
     }
+
+    public Money dividedBy(Money moneyToDivideWith) {
+        checkCurrency(moneyToDivideWith);
+        return Money.of(amount / moneyToDivideWith.amount, currency);
+    }
+
 }
