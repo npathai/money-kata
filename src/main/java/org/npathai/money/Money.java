@@ -100,4 +100,8 @@ public class Money {
     public boolean isPositiveOrZero() {
         return amount >= 0;
     }
+
+    public boolean isNegativeOrZero() {
+        return amount <= 0;
+    }
 }
