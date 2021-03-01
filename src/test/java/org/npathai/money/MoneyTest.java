@@ -3,8 +3,6 @@ package org.npathai.money;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -135,6 +133,17 @@ public class MoneyTest {
             assertThat(INR_11.dividedBy(INR_2)).isEqualTo(Money.of(5, Currency.INR));
             assertThat(INR_11.dividedBy(INR_10)).isEqualTo(Money.of(1, Currency.INR));
             assertThat(INR_2.dividedBy(INR_10)).isEqualTo(INR_0);
+        }
+    }
+
+    @Nested
+    class Queries {
+
+        @Test
+        public void isZero() {
+            assertThat(INR_0.isZero()).isTrue();
+            assertThat(INR_2.isZero()).isFalse();
+            assertThat(Money.of(-1, Currency.INR).isZero()).isFalse();
         }
     }
 }

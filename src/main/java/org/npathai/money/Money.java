@@ -77,4 +77,7 @@ public class Money {
         return Money.of(amount / moneyToDivideWith.amount, currency);
     }
 
+    public boolean isZero() {
+        return amount == 0;
+    }
 }
