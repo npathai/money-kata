@@ -89,7 +89,7 @@ public class Money {
         return isNegative() ? negated() : this;
     }
 
-    private boolean isNegative() {
+    public boolean isNegative() {
         return amount < 0;
     }
 }
