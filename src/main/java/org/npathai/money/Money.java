@@ -80,4 +80,16 @@ public class Money {
     public boolean isZero() {
         return amount == 0;
     }
+
+    public Money negated() {
+        return Money.of(-amount, currency);
+    }
+
+    public Money abs() {
+        return isNegative() ? negated() : this;
+    }
+
+    private boolean isNegative() {
+        return amount < 0;
+    }
 }

@@ -134,6 +134,20 @@ public class MoneyTest {
             assertThat(INR_11.dividedBy(INR_10)).isEqualTo(Money.of(1, Currency.INR));
             assertThat(INR_2.dividedBy(INR_10)).isEqualTo(INR_0);
         }
+
+        @Test
+        public void negatedReturnsMoneyWithNegatedValue() {
+            assertThat(INR_0.negated()).isEqualTo(INR_0);
+            assertThat(INR_2.negated()).isEqualTo(Money.of(-2, Currency.INR));
+            assertThat(Money.of(-2, Currency.INR).negated()).isEqualTo(INR_2);
+        }
+
+        @Test
+        public void absReturnsAbsoluteValue() {
+            assertThat(INR_0.abs()).isSameAs(INR_0);
+            assertThat(INR_2.abs()).isSameAs(INR_2);
+            assertThat(Money.of(-2, Currency.INR).abs()).isEqualTo(INR_2);
+        }
     }
 
     @Nested
