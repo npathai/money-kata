@@ -173,5 +173,12 @@ public class MoneyTest {
             assertThat(INR_2.isPositive()).isTrue();
             assertThat(Money.of(-1, Currency.INR).isPositive()).isFalse();
         }
+
+        @Test
+        public void isPositiveOrZero() {
+            assertThat(INR_0.isPositiveOrZero()).isTrue();
+            assertThat(INR_2.isPositiveOrZero()).isTrue();
+            assertThat(Money.of(-1, Currency.INR).isPositiveOrZero()).isFalse();
+        }
     }
 }

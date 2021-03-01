@@ -96,4 +96,8 @@ public class Money {
     public boolean isPositive() {
         return amount > 0;
     }
+
+    public boolean isPositiveOrZero() {
+        return amount >= 0;
+    }
 }
