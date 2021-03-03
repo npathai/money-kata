@@ -42,9 +42,18 @@ public class Money {
         return Money.of(amount + other.amount, currency);
     }
 
-    private void checkCurrency(Money addToAdd) {
-        if (!currency.equals(addToAdd.currency)) {
-            throw new CurrencyMismatchException(currency, addToAdd.currency);
+    public Money plus(Money... moniesToAdd) {
+        Money total = this;
+        for (Money moneyToAdd : moniesToAdd) {
+            checkCurrency(moneyToAdd);
+            total = total.plus(moneyToAdd);
+        }
+        return total;
+    }
+
+    private void checkCurrency(Money other) {
+        if (!currency.equals(other.currency)) {
+            throw new CurrencyMismatchException(currency, other.currency);
         }
     }
 

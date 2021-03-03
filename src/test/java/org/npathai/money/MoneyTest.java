@@ -2,6 +2,11 @@ package org.npathai.money;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -78,6 +83,7 @@ public class MoneyTest {
     }
 
     @Nested
+    static
     class Arithmetic {
 
         @Test
@@ -87,10 +93,27 @@ public class MoneyTest {
         }
 
         @Test
+        public void sameCurrencyPlusWithMultipleValues() {
+            assertThat(INR_10.plus(INR_11, INR_2, INR_9)).isEqualTo(Money.of(32, Currency.INR));
+            assertThat(INR_0.plus(INR_0, INR_11, INR_9)).isEqualTo(Money.of(20, Currency.INR));
+        }
+
+        @Test
         public void plusThrowsExceptionWhenCurrenciesDiffer() {
             assertThatThrownBy(() -> INR_10.plus(USD_10))
                     .isInstanceOf(CurrencyMismatchException.class)
                     .hasMessage("Currencies differ: INR/USD");
+        }
+
+        @Test
+        public void plusWithMultipleValuesThrowsExceptionWhenCurrenciesDiffer() {
+            assertThatThrownBy(() -> INR_10.plus(USD_10, INR_2))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: INR/USD");
+
+            assertThatThrownBy(() -> USD_10.plus(USD_10, INR_2))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: USD/INR");
         }
 
         @Test
@@ -148,6 +171,7 @@ public class MoneyTest {
             assertThat(INR_2.abs()).isSameAs(INR_2);
             assertThat(Money.of(-2, Currency.INR).abs()).isEqualTo(INR_2);
         }
+
     }
 
     @Nested
