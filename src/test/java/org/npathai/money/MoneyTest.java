@@ -2,11 +2,6 @@ package org.npathai.money;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,6 +30,7 @@ public class MoneyTest {
 
     @Nested
     class Comparison {
+
         @Test
         public void sameCurrencyEquality() {
             assertThat(INR_10.isEqualTo(INR_10)).isTrue();
@@ -120,6 +116,15 @@ public class MoneyTest {
         public void sameCurrencyMinus() {
             assertThat(INR_10.minus(INR_11)).isEqualTo(Money.of(-1, Currency.INR));
             assertThat(INR_11.minus(INR_10)).isEqualTo(Money.of(1, Currency.INR));
+            assertThat(Money.of(-1, Currency.INR).minus(Money.of(-1, Currency.INR))).isEqualTo(INR_0);
+        }
+
+        @Test
+        public void minusWithMultipleValues() {
+            assertThat(INR_11.minus(INR_2, INR_9)).isEqualTo(INR_0);
+            assertThat(Money.of(12, Currency.INR).minus(INR_2, INR_9)).isEqualTo(Money.of(1, Currency.INR));
+            assertThat(INR_11.minus(INR_2, INR_0)).isEqualTo(INR_9);
+            assertThat(INR_10.minus(INR_2, INR_9)).isEqualTo(Money.of(-1, Currency.INR));
         }
 
         @Test
@@ -127,6 +132,17 @@ public class MoneyTest {
             assertThatThrownBy(() -> INR_10.minus(USD_10))
                     .isInstanceOf(CurrencyMismatchException.class)
                     .hasMessage("Currencies differ: INR/USD");
+        }
+
+        @Test
+        public void minusWithMultipleValuesThrowsExceptionWhenCurrenciesDiffer() {
+            assertThatThrownBy(() -> INR_10.minus(USD_10, INR_2))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: INR/USD");
+
+            assertThatThrownBy(() -> USD_10.minus(USD_10, INR_2))
+                    .isInstanceOf(CurrencyMismatchException.class)
+                    .hasMessage("Currencies differ: USD/INR");
         }
 
         @Test

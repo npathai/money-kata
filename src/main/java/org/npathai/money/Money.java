@@ -76,6 +76,14 @@ public class Money {
         return Money.of(amount - moneyToSubtract.amount, currency);
     }
 
+    public Money minus(Money...moniesToSubtract) {
+        Money total = this;
+        for (Money money : moniesToSubtract) {
+            total = total.minus(money);
+        }
+        return total;
+    }
+
     public Money multipliedBy(Money moneyToMultiplyWith) {
         checkCurrency(moneyToMultiplyWith);
         return Money.of(amount * moneyToMultiplyWith.amount, currency);
