@@ -1,9 +1,10 @@
 package org.npathai.money;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 public class Money {
-
 
     private final long amount;
     private final Currency currency;
@@ -13,7 +14,21 @@ public class Money {
         this.currency = currency;
     }
 
+    public Money(BigDecimal amount, Currency currency) {
+        this.amount = amount;
+        this.currency = currency;
+    }
+
     public static Money of(long amount, Currency currency) {
+        return of((double) amount, currency);
+    }
+
+    public static Money of(BigDecimal amount, Currency currency) {
+        return of(amount, currency, RoundingMode.UNNECESSARY);
+    }
+
+    private static Money of(BigDecimal amount, Currency currency, RoundingMode roundingMode) {
+        amount = amount.setScale(currency.getDecimalPlaces(), roundingMode);
         return new Money(amount, currency);
     }
 

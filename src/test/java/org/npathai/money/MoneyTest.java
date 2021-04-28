@@ -19,13 +19,16 @@ public class MoneyTest {
     @Test
     public void creatingAMoneyInstance() {
         Money inr = Money.of(10, Currency.INR);
-        assertThat(inr.toString()).isEqualTo("INR 10");
+        assertThat(inr.toString()).isEqualTo("INR 10.00");
 
         Money zero = Money.of(0, Currency.INR);
-        assertThat(zero.toString()).isEqualTo("INR 0");
+        assertThat(zero.toString()).isEqualTo("INR 0.00");
 
         Money usd = Money.of(10, Currency.USD);
-        assertThat(usd.toString()).isEqualTo("USD 10");
+        assertThat(usd.toString()).isEqualTo("USD 10.00");
+
+        Money inrDouble = Money.of(10.00d, Currency.INR);
+        assertThat(inrDouble.toString()).isEqualTo("INR 10.00");
     }
 
     @Nested
@@ -167,6 +170,7 @@ public class MoneyTest {
             assertThat(INR_10.dividedBy(INR_10)).isEqualTo(Money.of(1, Currency.INR));
         }
 
+        // TODO check for divide by 0
         @Test
         public void divisionTruncatesDecimals() {
             assertThat(INR_11.dividedBy(INR_2)).isEqualTo(Money.of(5, Currency.INR));
